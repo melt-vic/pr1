@@ -1,16 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Tienda UOC{% endblock %}</title>
+        <link rel="icon" href="https://instructure-uploads-eu.s3.eu-west-1.amazonaws.com/account_186670000000000001/attachments/1640/favicon-32x32.png">
         {% block stylesheets %}
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
         {% endblock %}
 
         {% block javascripts %}
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block header %}
+            <header class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="{# path('home') #}"> <!-- Logotipo -->
+                    <img src="{{ asset('assets/common/logo-uoc-default.png') }}" alt="Tienda UOC" title="Tienda UOC" style="width: 30%">
+                </a>
+                <div class="d-flex flex-grow-1 justify-content-center"> <!-- Elementos centrados -->
+                    <a class="nav-link mx-3" href="{{ path('home') }}">Home</a>
+                    <a class="nav-link mx-3" href="{# path('categorias') #}">Categorías</a>
+                </div>
+                <a class="navbar-brand" href="{# path('carrito') #}">
+                    <i class="fas fa-shopping-cart fa-2x"></i>
+                </a>
+            </header>
+        {% endblock %}
+        {% block body %}
+
+        {% endblock %}
     </body>
 </html>
