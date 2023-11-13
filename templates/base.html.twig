@@ -23,7 +23,9 @@
                 </a>
                 <div class="d-flex flex-grow-1 justify-content-center"> <!-- Elementos centrados -->
                     <a class="nav-link mx-3" href="{{ path('home') }}">Home</a>
-                    <a class="nav-link mx-3" href="{# path('categorias') #}">Categorías</a>
+                    {% for category in categories.getCategories() %}
+                        <a class="nav-link mx-3" href="{{ path('category', {'name' : category.getName(), 'id' : category.getId()}) }}">{{ category.getName() }}</a>
+                    {% endfor %}
                 </div>
                 <a class="navbar-brand" href="{# path('carrito') #}">
                     <i class="fas fa-shopping-cart fa-2x"></i>
