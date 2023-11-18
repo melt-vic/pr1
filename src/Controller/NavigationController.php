@@ -5,7 +5,6 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\CategoryService;
 
 class NavigationController extends AbstractController
 {
@@ -19,7 +18,7 @@ class NavigationController extends AbstractController
     public function category(): Response
     {
         return $this->render('front/index.html.twig', [
-            'products' => []
+            'products' => [],
         ]);
     }
 }

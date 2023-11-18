@@ -21,7 +21,7 @@ class User
 
     #[ORM\Column(length: 60, nullable: true)]
     private ?string $password = null;
-    
+
     #[ORM\Column(length: 20, unique: true)]
     private ?string $email = null;
 

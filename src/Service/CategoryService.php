@@ -8,8 +8,8 @@ class CategoryService
 {
     public function __construct(private readonly CategoryRepository $categoryRepository)
     {
-
     }
+
     public function getCategories(): array
     {
         return $this->categoryRepository->findAll();
