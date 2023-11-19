@@ -1,0 +1,5 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <a href="{{ path('empty_cart') }}" class="btn btn-danger">Vaciar carrito</a>
+    {{ dump(cart) }}
+{% endblock %}
