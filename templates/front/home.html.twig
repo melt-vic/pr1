@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container my-4">
+        <div class="row">
+            {% for category in categories.getCategories() %}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <a href="{{ path('category', {'name' : category.getName(), 'id' : category.getId()}) }}" >
+                            <img src="{{ asset('assets/' ~ category.getImgPath()) }}" class="card-img-top"
+                                 title="{{ category.getName() }}"
+                                 alt="{{ category.getName() }}" />
+                        </a>
+                        <div class="card-body" >
+                            <h5 class="card-title text-center">
+                                <a href="{{ path('category', {'name' : category.getName()|replace({' ': '-'})|url_encode, 'id' : category.getId()}) }}"
+                                   class="text-decoration-none text-dark">
+                                    {{ category.getName() }}
+                                </a>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

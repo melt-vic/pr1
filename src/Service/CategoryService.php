@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Category;
 use App\Repository\CategoryRepository;
 
 class CategoryService
@@ -13,5 +14,10 @@ class CategoryService
     public function getCategories(): array
     {
         return $this->categoryRepository->findAll();
+    }
+
+    public function getCategory(int $id): ?Category
+    {
+        return $this->categoryRepository->find($id);
     }
 }
