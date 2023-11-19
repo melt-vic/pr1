@@ -18,9 +18,8 @@ class CartController extends AbstractController
     #[Route('/carrito', name: 'cart', methods: ['GET'])]
     public function index(Request $request): Response
     {
-
         return $this->render('front/cart.html.twig',
-            ['cart' => $request->getSession()->get('cart', [])]);
+            ['cart' => $request->getSession()->get('cart')]);
     }
 
     #[Route('/carrito/agregar/{id}', name: 'cart_add', requirements: ['id' => '\d+'], methods: ['GET'])]
@@ -36,6 +35,23 @@ class CartController extends AbstractController
         } else {
             $cart[$id]['quantity'] = 1;
             $cart[$id]['price'] = $product->getPrice();
+            $cart[$id]['name'] = $product->getName();
+            $cart[$id]['imgPath'] = $product->getImgPath();
+        }
+        $request->getSession()->set('cart', $cart);
+
+        return $this->redirectToRoute('cart');
+    }
+
+    #[Route('/carrito/eliminar/{id}', name: 'cart_remove', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function removeFromCart(Request $request, $id): Response
+    {
+        $cart = $request->getSession()->get('cart', []);
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity'] = $cart[$id]['quantity'] - 1;
+            if ($cart[$id]['quantity'] <= 0) {
+                unset($cart[$id]);
+            }
         }
         $request->getSession()->set('cart', $cart);
 
