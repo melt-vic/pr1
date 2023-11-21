@@ -1,7 +1,8 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     globals:
-        categories: '@App\Service\CategoryService'
+        categoryService: '@App\Service\CategoryService'
+        cartService: '@App\Service\CartService'
 
 when@test:
     twig:

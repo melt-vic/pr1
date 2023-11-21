@@ -31,7 +31,7 @@ class CartController extends AbstractController
         }
         $cart = $request->getSession()->get('cart', []);
         if (isset($cart[$id])) {
-            $cart[$id]['quantity'] = $cart[$id]['quantity'] + 1;
+            ++$cart[$id]['quantity'];
         } else {
             $cart[$id]['quantity'] = 1;
             $cart[$id]['price'] = $product->getPrice();
@@ -48,7 +48,7 @@ class CartController extends AbstractController
     {
         $cart = $request->getSession()->get('cart', []);
         if (isset($cart[$id])) {
-            $cart[$id]['quantity'] = $cart[$id]['quantity'] - 1;
+            --$cart[$id]['quantity'];
             if ($cart[$id]['quantity'] <= 0) {
                 unset($cart[$id]);
             }

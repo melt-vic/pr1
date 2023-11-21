@@ -23,7 +23,7 @@
                 </a>
                 <div class="d-flex flex-grow-1 justify-content-center"> <!-- Elementos centrados -->
                     <a class="nav-link mx-3" href="{{ path('home') }}">Home</a>
-                    {% for category in categories.getCategories() %}
+                    {% for category in categoryService.getCategories() %}
                         <a class="nav-link mx-3" href="{{ path('category', {'name' : category.getName(), 'id' : category.getId()}) }}">{{ category.getName() }}</a>
                     {% endfor %}
                 </div>
