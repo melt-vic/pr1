@@ -43,6 +43,13 @@ class CartService
         $this->requestStack->getSession()->remove('cart');
     }
 
+    public function getNumberOfProducts(): int
+    {
+        $cart = $this->requestStack->getSession()->get('cart', []);
+
+        return array_sum(array_column($cart, 'quantity'));
+    }
+
     public function calculateTotalAmount(): int
     {
         $cart = $this->requestStack->getSession()->get('cart', []);
