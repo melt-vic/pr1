@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
+use App\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ class CartController extends AbstractController
 {
     public function __construct(
         private readonly ProductRepository $productRepository,
+        private readonly CartService $cartService
     ) {
     }
 
@@ -23,45 +25,29 @@ class CartController extends AbstractController
     }
 
     #[Route('/carrito/agregar/{id}', name: 'cart_add', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function addToCart(Request $request, $id): Response
+    public function addToCart(int $id): Response
     {
         $product = $this->productRepository->find($id);
         if (empty($product)) {
             throw $this->createNotFoundException('El producto no existe');
         }
-        $cart = $request->getSession()->get('cart', []);
-        if (isset($cart[$id])) {
-            ++$cart[$id]['quantity'];
-        } else {
-            $cart[$id]['quantity'] = 1;
-            $cart[$id]['price'] = $product->getPrice();
-            $cart[$id]['name'] = $product->getName();
-            $cart[$id]['imgPath'] = $product->getImgPath();
-        }
-        $request->getSession()->set('cart', $cart);
+        $this->cartService->addToCart($id, $product);
 
         return $this->redirectToRoute('cart');
     }
 
     #[Route('/carrito/eliminar/{id}', name: 'cart_remove', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function removeFromCart(Request $request, $id): Response
+    public function removeFromCart(int $id): Response
     {
-        $cart = $request->getSession()->get('cart', []);
-        if (isset($cart[$id])) {
-            --$cart[$id]['quantity'];
-            if ($cart[$id]['quantity'] <= 0) {
-                unset($cart[$id]);
-            }
-        }
-        $request->getSession()->set('cart', $cart);
+        $this->cartService->removeFromCart($id);
 
         return $this->redirectToRoute('cart');
     }
 
     #[Route('/vaciar-carrito', name: 'empty_cart', methods: ['GET'])]
-    public function emptyCart(Request $request): Response
+    public function emptyCart(): Response
     {
-        $request->getSession()->remove('cart');
+        $this->cartService->emptyCart();
 
         return $this->redirectToRoute('cart');
     }
