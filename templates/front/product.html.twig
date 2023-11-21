@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-6">
             <img src="{{ asset('assets/' ~ product.getImgPath()) }}" class="img-fluid" alt="{{ product.getName() }}" />
-            <p><strong>Precio: {{ product.getPrice() / 100 }} EUR</strong></p>
+            <p><strong>Precio: {{ (product.getPrice()/100)|number_format(2, ',') }} EUR</strong></p>
             <a href="{{ path('cart_add', {'id' : product.getId()}) }}" class="btn btn-primary">Añadir al carrito</a>
             <a href="{{ path('category', {'id' : product.getCategory().getId(), 'name' : product.getCategory().getName()|url_encode}) }}"
                class="btn btn-secondary">Volver</a>

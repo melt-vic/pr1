@@ -14,6 +14,7 @@
                         <img src="{{ asset('assets/' ~ item['imgPath']) }}" class="card-img-top" alt="{{ item['name'] }}" />
                         <div class="card-body">
                             <h5 class="card-title">{{ item['name'] }}</h5>
+                            <p class="card-text">{{ (item['price']/100)|number_format(2, ',') }} EUR</p>
                             <div class="input-group">
                                 <a href="{{ path('cart_remove', {'id' : productId}) }}" class="btn btn-outline-secondary" type="button">
                                     <i class="fa-solid fa-minus"></i>
@@ -34,7 +35,7 @@
         {% if cart is not empty %}
             <div class="row justify-content-center">
                 <p class="text-center" style="font-size: 1.2em; color: #007BFF;">
-                    <span class="fw-bold">Precio total:</span> {{ cartService.calculateTotalAmount() }} EUR
+                    <span class="fw-bold">Precio total:</span> {{ (cartService.calculateTotalAmount()/100)|number_format(2, ',') }} EUR
                 </p>
             </div>
             <div class="row justify-content-center mt-4">

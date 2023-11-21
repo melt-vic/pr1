@@ -11,7 +11,7 @@ class CartService
     ) {
     }
 
-    public function calculateTotalAmount(): float
+    public function calculateTotalAmount(): int
     {
         $cart = $this->requestStack->getSession()->get('cart', []);
         $totalAmount = 0;
@@ -19,6 +19,6 @@ class CartService
             $totalAmount += $item['quantity'] * $item['price'];
         }
 
-        return $totalAmount / 100;
+        return $totalAmount;
     }
 }
