@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\UserType;
 use App\Form\UserAnonymousType;
 use App\Form\UserRegisteredType;
+use App\Service\UserService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CheckoutController extends AbstractController
 {
+    public function __construct(private readonly UserService $userService)
+    {
+    }
+
     #[Route('/checkout', name: 'checkout', methods: ['GET', 'POST'])]
     public function new(Request $request, ManagerRegistry $mr, UserPasswordHasherInterface $passwordHasher): Response
     {
@@ -26,9 +31,11 @@ class CheckoutController extends AbstractController
         $formAnonymous->handleRequest($request);
         if ($formAnonymous->isSubmitted() && $formAnonymous->isValid()) {
             $user = $formAnonymous->getData();
-            $user->setType($mr->getRepository(UserType::class)->find(1));
-            $em->persist($user);
-            $em->flush();
+            if (!$this->userService->userExists($user->getEmail())) {
+                $user->setType($mr->getRepository(UserType::class)->find(1));
+                $em->persist($user);
+                $em->flush();
+            }
 
             return $this->redirectToRoute('requestSummary');
         }
@@ -36,11 +43,13 @@ class CheckoutController extends AbstractController
         $formRegistered->handleRequest($request);
         if ($formRegistered->isSubmitted() && $formRegistered->isValid()) {
             $user = $formRegistered->getData();
-            $user->setType($mr->getRepository(UserType::class)->find(2));
-            $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
-            $user->setPassword($hashedPassword);
-            $em->persist($user);
-            $em->flush();
+            if (!$this->userService->userExists($user->getEmail())) {
+                $user->setType($mr->getRepository(UserType::class)->find(2));
+                $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+                $user->setPassword($hashedPassword);
+                $em->persist($user);
+                $em->flush();
+            }
 
             return $this->redirectToRoute('requestSummary');
         }
