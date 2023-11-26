@@ -3,15 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Entity\UserType;
 use App\Form\UserAnonymousType;
 use App\Form\UserRegisteredType;
 use App\Service\UserService;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CheckoutController extends AbstractController
@@ -21,21 +18,16 @@ class CheckoutController extends AbstractController
     }
 
     #[Route('/checkout', name: 'checkout', methods: ['GET', 'POST'])]
-    public function new(Request $request, ManagerRegistry $mr, UserPasswordHasherInterface $passwordHasher): Response
+    public function new(Request $request): Response
     {
         $user = new User();
         $formAnonymous = $this->createForm(UserAnonymousType::class, $user);
         $formRegistered = $this->createForm(UserRegisteredType::class, $user);
-        $em = $mr->getManager();
 
         $formAnonymous->handleRequest($request);
         if ($formAnonymous->isSubmitted() && $formAnonymous->isValid()) {
             $user = $formAnonymous->getData();
-            if (!$this->userService->userExists($user->getEmail())) {
-                $user->setType($mr->getRepository(UserType::class)->find(1));
-                $em->persist($user);
-                $em->flush();
-            }
+            $this->userService->insertUser($user);
 
             return $this->redirectToRoute('requestSummary');
         }
@@ -43,13 +35,7 @@ class CheckoutController extends AbstractController
         $formRegistered->handleRequest($request);
         if ($formRegistered->isSubmitted() && $formRegistered->isValid()) {
             $user = $formRegistered->getData();
-            if (!$this->userService->userExists($user->getEmail())) {
-                $user->setType($mr->getRepository(UserType::class)->find(2));
-                $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
-                $user->setPassword($hashedPassword);
-                $em->persist($user);
-                $em->flush();
-            }
+            $this->userService->insertUser($user, false);
 
             return $this->redirectToRoute('requestSummary');
         }
