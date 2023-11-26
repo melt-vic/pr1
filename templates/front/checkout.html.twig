@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block title %}Checkout - Tienda UOC{% endblock %}
+{% block body %}
+    {# form_theme form 'foundation_5_layout.html.twig' #} {# Aplica a todos los forms una vez incluido en twig.yaml #}
+    {{ form_start(formAnonymous) }}
+
+    {{ form_end(formAnonymous) }}
+
+    {{ form_start(formRegistered) }}
+
+    {{ form_end(formRegistered) }}
+{% endblock %}

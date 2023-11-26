@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
@@ -16,17 +17,19 @@ class User
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 80)]
+    #[ORM\Column(length: 80, nullable: true)]
     private ?string $name = null;
 
     #[ORM\Column(length: 60, nullable: true)]
     private ?string $password = null;
 
+    #[Assert\NotBlank()]
     #[ORM\Column(length: 20, unique: true)]
-    private ?string $email = null;
+    private ?string $email;
 
+    #[Assert\NotBlank()]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $address = null;
+    private ?string $address;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
