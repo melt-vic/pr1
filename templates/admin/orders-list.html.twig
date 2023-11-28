@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block title %}Panel de control: Listado de pedidos - Tienda UOC{% endblock %}
+{% block body %}
+    <h1>Orders admin</h1>
+{% endblock %}
+{% block footer %}
+    <footer class="bg-light text-center py-3">
+        <a href="{{ path('app_logout') }}" class="btn btn-primary">
+            <i class="fas fa-sign-out"></i> Salir
+        </a>
+    </footer>
+{% endblock %}

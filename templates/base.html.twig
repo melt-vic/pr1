@@ -38,5 +38,12 @@
         {% block body %}
 
         {% endblock %}
+        {% block footer %}
+            <footer class="bg-light text-center py-3">
+                <a href="{{ path('adminOrders') }}" class="btn btn-primary">
+                    <i class="fas fa-cogs"></i> Panel de Control
+                </a>
+            </footer>
+        {% endblock %}
     </body>
 </html>
