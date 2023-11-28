@@ -5,10 +5,10 @@
     <div class="container my-4">
         <h1 class="text-center">Carrito</h1>
         <div class="row justify-content-center">
-            {% if cart is empty %}
+            {% if cart.products is empty %}
                 <p class="text-center">Tu carrito está vacío. ¡Anímate a comprar algo de nuestro <a href="{{ path('home') }}">catálogo</a>!</p>
             {% endif %}
-            {% for productId, item in cart %}
+            {% for productId, item in cart.products %}
                 <div class="col-md-6 col-lg-3 mb-4">
                     <div class="card">
                         <img src="{{ asset('assets/' ~ item['imgPath']) }}" class="card-img-top" alt="{{ item['name'] }}" />
@@ -32,7 +32,7 @@
                 </div>
             {% endfor %}
         </div>
-        {% if cart is not empty %}
+        {% if cart.products is not empty %}
             <div class="row justify-content-center">
                 <p class="text-center" style="font-size: 1.2em; color: #007BFF;">
                     <span class="fw-bold">Precio total:</span> {{ (cartService.calculateTotalAmount()/100)|number_format(2, ',') }} EUR

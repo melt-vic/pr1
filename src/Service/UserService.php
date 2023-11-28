@@ -13,7 +13,8 @@ class UserService
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly ManagerRegistry $mr,
-        private readonly UserPasswordHasherInterface $passwordHasher
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly CartService $cartService
     ) {
     }
 
@@ -26,15 +27,14 @@ class UserService
             $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
         }
-        if (!$this->userExists($user->getEmail())) {
+        $userInDB = $this->userRepository->findOneBy(['email' => $user->getEmail()]);
+        if (!$userInDB) {
             $em = $this->mr->getManager();
             $em->persist($user);
             $em->flush();
+            $this->cartService->addUserId($user->getId());
+        } else {
+            $this->cartService->addUserId($userInDB->getId());
         }
-    }
-
-    private function userExists(string $email): bool
-    {
-        return null !== $this->userRepository->findOneBy(['email' => $email]);
     }
 }

@@ -15,13 +15,13 @@ class CartService
     public function addToCart(int $id, Product $product): void
     {
         $cart = $this->requestStack->getSession()->get('cart', []);
-        if (isset($cart[$id])) {
-            ++$cart[$id]['quantity'];
+        if (isset($cart['products'][$id])) {
+            ++$cart['products'][$id]['quantity'];
         } else {
-            $cart[$id]['quantity'] = 1;
-            $cart[$id]['price'] = $product->getPrice();
-            $cart[$id]['name'] = $product->getName();
-            $cart[$id]['imgPath'] = $product->getImgPath();
+            $cart['products'][$id]['quantity'] = 1;
+            $cart['products'][$id]['price'] = $product->getPrice();
+            $cart['products'][$id]['name'] = $product->getName();
+            $cart['products'][$id]['imgPath'] = $product->getImgPath();
         }
         $this->requestStack->getSession()->set('cart', $cart);
     }
@@ -29,10 +29,10 @@ class CartService
     public function removeFromCart(int $id): void
     {
         $cart = $this->requestStack->getSession()->get('cart', []);
-        if (isset($cart[$id])) {
-            --$cart[$id]['quantity'];
-            if ($cart[$id]['quantity'] <= 0) {
-                unset($cart[$id]);
+        if (isset($cart['products'][$id])) {
+            --$cart['products'][$id]['quantity'];
+            if ($cart['products'][$id]['quantity'] <= 0) {
+                unset($cart['products'][$id]);
             }
         }
         $this->requestStack->getSession()->set('cart', $cart);
@@ -47,17 +47,29 @@ class CartService
     {
         $cart = $this->requestStack->getSession()->get('cart', []);
 
-        return array_sum(array_column($cart, 'quantity'));
+        return array_sum(array_column($cart['products'], 'quantity'));
     }
 
     public function calculateTotalAmount(): int
     {
         $cart = $this->requestStack->getSession()->get('cart', []);
         $totalAmount = 0;
-        foreach ($cart as $item) {
+        foreach ($cart['products'] as $item) {
             $totalAmount += $item['quantity'] * $item['price'];
         }
 
         return $totalAmount;
+    }
+
+    public function getCart(): array
+    {
+        return $this->requestStack->getSession()->get('cart');
+    }
+
+    public function addUserId(int $id): void
+    {
+        $cart = $this->requestStack->getSession()->get('cart');
+        $cart['user_id'] = $id;
+        $this->requestStack->getSession()->set('cart', $cart);
     }
 }
