@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Request;
 use App\Entity\RequestLine;
 use App\Repository\ProductRepository;
+use App\Repository\RequestRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,6 +15,7 @@ class RequestService
     public function __construct(
         private readonly ProductRepository $productRepository,
         private readonly UserRepository $userRepository,
+        private readonly RequestRepository $requestRepository,
         private readonly ManagerRegistry $mr,
         private readonly CartService $cartService,
     ) {
@@ -46,5 +48,10 @@ class RequestService
         $em->persist($requestLine);
 
         $request->addRequestLine($requestLine);
+    }
+
+    public function getAllRequests(): array
+    {
+        return $this->requestRepository->findAll();
     }
 }

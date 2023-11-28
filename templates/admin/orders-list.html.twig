@@ -1,12 +1,55 @@
 {% extends 'base.html.twig' %}
 {% block title %}Panel de control: Listado de pedidos - Tienda UOC{% endblock %}
 {% block body %}
-    <h1>Orders admin</h1>
+    <div class="container my-4">
+        <h1 class="text-center">Listado de pedidos</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped bg-light" style="border-spacing: 8px; border-collapse: separate;">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Usuario</th>
+                    <th>Productos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in requests %}
+                    {% set userType = request.getUser().getType() %}
+                    <tr>
+                        <td>{{ request.getId() }}</td>
+                        <td>
+                            <span class="fw-bold">Email:</span> {{ request.getUser().getEmail() }}
+                            <br />
+                            <span class="fw-bold">Dirección:</span> {{ request.getUser().getAddress() }}
+                            <br />
+                            <span class="fw-bold">Tipo:</span> {{ userType.getName() }}
+                            {% if userType.getId() == 2 %}
+                                <br />
+                                <span class="fw-bold">Nombre:</span> {{ request.getUser().getName() }}
+                            {% endif %}
+                            <br />
+                            <span class="fw-bold">Realizó el pedido:</span> {{ request.getDateCreated()|date('d/m/Y') }} a las {{ request.getDateCreated()|date('H:i') }}
+                        </td>
+                        <td>
+                            {% for line in request.getRequestLines() %}
+                                <img src="{{ asset('assets/' ~ line.getProduct().getImgPath()) }}" alt="{{ line.getProduct().getName() }}" title="{{ line.getProduct().getName() }}" style="max-width: 50px; max-height: 50px;">
+                                {{ line.getProduct().getName() }}
+                                <br />
+                                <span class="fw-bold">Cantidad:</span> {{ line.getQuantity() }} <span class="fw-bold">Precio unidad:</span> {{ (line.getProduct().getPrice()/100)|number_format(2, ',')}}EUR
+                                <br />
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
 {% block footer %}
     <footer class="bg-light text-center py-3">
         <a href="{{ path('app_logout') }}" class="btn btn-primary">
-            <i class="fas fa-sign-out"></i> Salir
+            <i class="fas fa-sign-out"></i> Salir (Logout)
         </a>
     </footer>
 {% endblock %}
