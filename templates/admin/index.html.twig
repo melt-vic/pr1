@@ -1,24 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello LoginController!{% endblock %}
+{% block title %}Inicio de sesión - Tienda UOC{% endblock %}
 
 {% block body %}
     <div class="container my-4">
-        {% if error %}
-            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-        <form action="{{ path('app_login') }}" method="post">
-            <label for="username">Email:</label>
-            <input type="email" id="username" name="_username" value="{{ last_username }}" />
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <form action="{{ path('app_login') }}" method="post">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Email:</label>
+                        <input type="email" id="username" name="_username" class="form-control" value="{{ last_username }}" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" id="password" name="_password" class="form-control" required />
+                    </div>
+                    {# URL a la que se redirige al usuario si logró autenticarse #}
+                    <input type="hidden" name="_target_path" value="{{ path('adminOrders') }}" />
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="_password" />
-
-            {# If you want to control the URL the user is redirected to on success #}
-            <input type="hidden" name="_target_path" value="{{ path('adminOrders') }}" />
-
-            <button type="submit">Acceder</button>
-        </form>
+                    <button type="submit" class="btn btn-primary">Acceder</button>
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block footer %}
