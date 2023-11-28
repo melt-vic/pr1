@@ -20,16 +20,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 80, nullable: true)]
+    #[Assert\Length(
+        max: 80,
+        maxMessage: 'El nombre no puede tener más de {{ limit }} caracteres'
+    )]
     private ?string $name = null;
 
     #[ORM\Column(length: 60, nullable: true)]
+    #[Assert\Length(
+        min: 8,
+        minMessage: 'La contraseña debe tener al menos {{ limit }} caracteres'
+    )]
     private ?string $password = null;
 
     #[Assert\NotBlank()]
-    #[ORM\Column(length: 20, unique: true)]
+    #[Assert\Length(
+        min: 6,
+        max: 50,
+        minMessage: 'El email debe tener al menos {{ limit }} caracteres',
+        maxMessage: 'El email no puede tener más de {{ limit }} caracteres'
+    )]
+    #[ORM\Column(length: 40, unique: true)]
     private ?string $email;
 
     #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 10,
+        max: 1000,
+        minMessage: 'La dirección debe tener al menos {{ limit }} caracteres',
+        maxMessage: 'La dirección no puede tener más de {{ limit }} caracteres'
+    )]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $address;
 
