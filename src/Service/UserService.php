@@ -32,9 +32,9 @@ class UserService
             $em = $this->mr->getManager();
             $em->persist($user);
             $em->flush();
-            $this->cartService->addUserId($user->getId());
+            $this->cartService->addUserId($user);
         } else {
-            $this->cartService->addUserId($userInDB->getId());
+            $this->cartService->addUserId($userInDB);
         }
     }
 }

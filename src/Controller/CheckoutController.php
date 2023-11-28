@@ -48,10 +48,15 @@ class CheckoutController extends AbstractController
     }
 
     #[Route('/request-summary', name: 'requestSummary', methods: ['GET'])]
-    public function requestSummary(): Response
+    public function requestSummary(Request $request): Response
     {
-        dd($this->cartService->getCart());
+        $cart = $request->getSession()->get('cart');
+        dump($cart);
+        if (!$cart) {
+            return $this->redirectToRoute('cart');
+        }
 
-        return $this->render('front/request-summary.html.twig');
+        return $this->render('front/request-summary.html.twig',
+            ['cart' => $cart]);
     }
 }

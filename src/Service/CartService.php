@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Product;
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class CartService
@@ -45,7 +46,10 @@ class CartService
 
     public function getNumberOfProducts(): int
     {
-        $cart = $this->requestStack->getSession()->get('cart', []);
+        $cart = $this->requestStack->getSession()->get('cart');
+        if (!isset($cart['products'])) {
+            return 0;
+        }
 
         return array_sum(array_column($cart['products'], 'quantity'));
     }
@@ -60,16 +64,14 @@ class CartService
 
         return $totalAmount;
     }
-
-    public function getCart(): array
-    {
-        return $this->requestStack->getSession()->get('cart');
-    }
-
-    public function addUserId(int $id): void
+    public function addUserId(User $user): void
     {
         $cart = $this->requestStack->getSession()->get('cart');
-        $cart['user_id'] = $id;
+        $cart['user']['id'] = $user->getId();
+        $cart['user']['name'] = $user->getName();
+        $cart['user']['email'] = $user->getEmail();
+        $cart['user']['address'] = $user->getAddress();
+
         $this->requestStack->getSession()->set('cart', $cart);
     }
 }
