@@ -13,9 +13,9 @@ class UserAnonymousType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('address', TextType::class)
-            ->add('save', SubmitType::class, ['label' => 'Checkout'])
+            ->add('email', EmailType::class, ['label' => 'Correo electrónico'])
+            ->add('address', TextType::class, ['label' => 'Dirección'])
+            ->add('save', SubmitType::class, ['label' => 'Checkout!'])
         ;
     }
 }

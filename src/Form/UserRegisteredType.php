@@ -14,11 +14,11 @@ class UserRegisteredType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('email', EmailType::class)
-            ->add('password', PasswordType::class)
-            ->add('address', TextType::class)
-            ->add('save', SubmitType::class, ['label' => 'Checkout'])
+            ->add('name', TextType::class, ['label' => 'Nombre y apellidos'])
+            ->add('email', EmailType::class, ['label' => 'Correo electrónico'])
+            ->add('password', PasswordType::class, ['label' => 'Contraseña'])
+            ->add('address', TextType::class, ['label' => 'Dirección'])
+            ->add('save', SubmitType::class, ['label' => 'Checkout!'])
         ;
     }
 }

@@ -3,8 +3,8 @@ twig:
     globals:
         categoryService: '@App\Service\CategoryService'
         cartService: '@App\Service\CartService'
+    form_themes: [ 'bootstrap_5_layout.html.twig' ]
 
 when@test:
     twig:
         strict_variables: true
-        form_themes: [ 'bootstrap_5_layout.html.twig' ]
