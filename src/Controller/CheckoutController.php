@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserAnonymousType;
 use App\Form\UserRegisteredType;
-use App\Service\CartService;
+use App\Service\RequestService;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,8 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CheckoutController extends AbstractController
 {
-    public function __construct(private readonly UserService $userService, private readonly CartService $cartService)
-    {
+    public function __construct(
+        private readonly UserService $userService,
+        private readonly RequestService $requestService
+    ) {
     }
 
     #[Route('/checkout', name: 'checkout', methods: ['GET', 'POST'])]
@@ -51,12 +53,19 @@ class CheckoutController extends AbstractController
     public function requestSummary(Request $request): Response
     {
         $cart = $request->getSession()->get('cart');
-        dump($cart);
         if (!$cart) {
             return $this->redirectToRoute('cart');
         }
 
         return $this->render('front/request-summary.html.twig',
             ['cart' => $cart]);
+    }
+
+    #[Route('/request-insert', name: 'requestInsert', methods: ['GET'])]
+    public function requestInsert(Request $request): Response
+    {
+        $this->requestService->insertCart();
+
+        return $this->render('front/request-confirmed.html.twig');
     }
 }
