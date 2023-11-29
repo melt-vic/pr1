@@ -31,7 +31,25 @@
 
         <h3 class="text-center">Información de los productos</h3>
         <div class="row justify-content-center">
-            {% include 'front/common/cart-products.html.twig' %}
+            {% for productId, item in cart.products %}
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card">
+                        <img src="{{ asset('assets/' ~ item['imgPath']) }}" class="card-img-top" alt="{{ item['name'] }}" title="{{ item['name'] }}" />
+                        <div class="card-body">
+                            <h6 class="card-title" style="-webkit-line-clamp: 2; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical;">{{ item['name'] }}</h6>
+                            <p class="card-text text-center">Unidad a {{ (item['price']/100)|number_format(2, ',') }} EUR</p>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-center" value="{{ item['quantity'] }}" readonly />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row justify-content-center">
+            <p class="text-center" style="font-size: 1.2em; color: #007BFF;">
+                <span class="fw-bold">Precio total:</span> {{ (cartService.calculateTotalAmount()/100)|number_format(2, ',') }} EUR
+            </p>
         </div>
         <div class="row justify-content-center">
             <div class="text-center">
