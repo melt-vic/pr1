@@ -34,6 +34,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[Assert\NotBlank()]
+    #[Assert\Email(
+        message: 'El email "{{ value }}" no es una dirección válida'
+    )]
     #[Assert\Length(
         min: 6,
         max: 50,
@@ -41,7 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         maxMessage: 'El email no puede tener más de {{ limit }} caracteres'
     )]
     #[ORM\Column(length: 40, unique: true)]
-    private ?string $email;
+    private string $email;
 
     #[ORM\Column(type: 'json')]
     private array $roles = [];
@@ -98,7 +101,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -188,6 +191,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 }
