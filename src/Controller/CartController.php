@@ -44,6 +44,14 @@ class CartController extends AbstractController
         return $this->redirectToRoute('cart');
     }
 
+    #[Route('/carrito/eliminar-producto/{id}', name: 'cart_remove_product', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function removeProductFromCart(int $id): Response
+    {
+        $this->cartService->removeProductFromCart($id);
+
+        return $this->redirectToRoute('cart');
+    }
+
     #[Route('/vaciar-carrito', name: 'empty_cart', methods: ['GET'])]
     public function emptyCart(): Response
     {

@@ -38,6 +38,15 @@ class CartService
         $this->requestStack->getSession()->set('cart', $cart);
     }
 
+    public function removeProductFromCart(int $id): void
+    {
+        $cart = $this->requestStack->getSession()->get('cart');
+        if (isset($cart['products'][$id])) {
+            unset($cart['products'][$id]);
+        }
+        $this->requestStack->getSession()->set('cart', $cart);
+    }
+
     public function emptyCart(): void
     {
         $this->requestStack->getSession()->remove('cart');
